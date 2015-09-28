@@ -283,7 +283,7 @@ exports.crop = function(options) {
 		if (options.cropwidth === undefined) return deferred.reject(error_messages['dim']);
 
 		options.cropheight = options.cropheight || options.cropwidth;
-		options.gravity = options.gravity || 'Center';
+		options.gravity = options.x && options.y ? (options.gravity || 'Center') : null;
 		options.x = options.x || 0;
 		options.y = options.y || 0;
 
@@ -305,8 +305,10 @@ exports.crop = function(options) {
 		}
 
     args.push('-auto-orient')
-    args.push('-gravity')
-    args.push(options.gravity)
+    if(options.gravity) {
+    	args.push('-gravity')
+	args.push(options.gravity)
+    }
     args.push('-crop')
     args.push(options.cropwidth + 'x'+ options.cropheight + '+' + options.x + '+' + options.y)
     if (options.quality) {
